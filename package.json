@@ -1,12 +1,12 @@
 {
-    "name": "c9.ide.language.javascript.eslint",
-    "description": "The repository for c9.ide.language.javascript.eslint, a Cloud9 core plugin",
-    "version": "3.0.0",
-    "author": "Cloud9",
+    "name": "cie.eslint",
+    "description": "An eslint plugin for Cloud9 which runs an external eslint.",
+    "version": "0.0.0",
+    "author": "cie",
     "contributors": [],
     "repository": {
         "type": "git",
-        "url": "http://github.com/c9/c9.ide.language.javascript.eslint.git"
+        "url": "http://github.com/cie/cie.eslint"
     },
     "plugins": {
         "eslint": {}
@@ -15,7 +15,6 @@
         "core"
     ],
     "licenses": [
-        "AGPL",
-        "C9SDK"
+        "MIT"
     ]
 }
