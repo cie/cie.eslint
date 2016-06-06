@@ -8,6 +8,7 @@
         "type": "git",
         "url": "http://github.com/cie/cie.eslint"
     },
+    "engines": {"c9": ">=3.0.0"},
     "plugins": {
         "eslint": {}
     },
