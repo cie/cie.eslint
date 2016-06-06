@@ -15,16 +15,34 @@ define(function(require, exports, module) {
         if (filePath.startsWith("/")) filePath = handler.workspaceDir + filePath
         
         var dirname = require("path").dirname(filePath)
-        workerUtil.execAnalysis(
+        
+        var timeouted = false
+        var finished = false
+        setTimeout(function() {
+            if (finished) return;
+            timeouted = true;
+            callback([{ pos: { sl: 0 }, message: "Eslint took too long to analyze.", level: "warning" }]);
+        }, 3000)
+        
+        var cmd = "echo \""+docValue.replace(/([\\"$`])/g, "\\$1")+"\" | eslint_d --parser=babel-eslint --stdin --format=json --stdin-filename " + filePath.replace(/([^a-zA-Z0-9_\/~.-])/g, "\\$1")
+        console.log(cmd)
+        workerUtil.execFile(
             "bash",
             {
-                mode: "stdin",
-                args: ["-c", "eslint --stdin --format=json --stdin-filename " + filePath.replace(/([^a-zA-Z0-9_\/~.-])/g, "\\$1")],
-                maxCallInterval: 1200,
+                args: ["-c", cmd],
+                maxCallInterval: 50,
+                timeout: 4000,
             },
             function(err, stdout, stderr) {
+                console.log(stdout, stderr)
+                if (timeouted) return;
+                finished = true;
                 if (err && err.code !== 255) return callback(err);
-                if (typeof stdout === "string") return callback(new Error(stdout + stderr));
+                try {
+                    stdout = JSON.parse(stdout)
+                } catch (e) {
+                    return callback(new Error(stdout + stderr));
+                }
     
                 
                 var markers = [];
