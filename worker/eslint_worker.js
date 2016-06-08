@@ -25,7 +25,6 @@ define(function(require, exports, module) {
         }, 3000)
         
         var cmd = "echo \""+docValue.replace(/([\\"$`])/g, "\\$1")+"\" | eslint_d --parser=babel-eslint --stdin --format=json --stdin-filename " + filePath.replace(/([^a-zA-Z0-9_\/~.-])/g, "\\$1")
-        console.log(cmd)
         workerUtil.execFile(
             "bash",
             {
@@ -34,16 +33,14 @@ define(function(require, exports, module) {
                 timeout: 4000,
             },
             function(err, stdout, stderr) {
-                console.log(stdout, stderr)
                 if (timeouted) return;
                 finished = true;
-                if (err && err.code !== 255) return callback(err);
+                if (err && err.code !== 255 && err.code !== 1 && err.code !== 2) return callback([{pos: {sl: 0}, message:e.message, level: "error"}]);
                 try {
                     stdout = JSON.parse(stdout)
                 } catch (e) {
-                    return callback(new Error(stdout + stderr));
+                    return callback([{pos: {sl: 0}, message:stdout+stderr, level: "error"}]);
                 }
-    
                 
                 var markers = [];
                 stdout.forEach(function(file) {
