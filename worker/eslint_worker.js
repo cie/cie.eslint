@@ -42,7 +42,7 @@ define(function(require, exports, module) {
                 working = false;
                 if (timeouted) return;
                 finished = true;
-                if (err && err.code !== 255 && err.code !== 1 && err.code !== 2) return callback([{pos: {sl: 0}, message:e.message, level: "error"}]);
+                if (err && err.code !== 255 && err.code !== 1 && err.code !== 2) return callback([{pos: {sl: 0}, message:err.message, level: "error"}]);
                 try {
                     stdout = JSON.parse(stdout)
                 } catch (e) {

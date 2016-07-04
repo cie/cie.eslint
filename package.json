@@ -4,6 +4,7 @@
     "version": "0.0.0",
     "author": "cie",
     "contributors": [],
+    "permissions": "world",
     "repository": {
         "type": "git",
         "url": "http://github.com/cie/cie.eslint"
